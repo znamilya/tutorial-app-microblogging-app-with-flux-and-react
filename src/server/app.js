@@ -1,9 +1,9 @@
-import express          from 'express';
-import bodyParser       from 'body-parser';
-import cookieParser     from 'cookie-parser';
-import session          from 'express-session';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
-import login            from 'modules/login';
+const login = require('./modules/login');
 
 
 express()

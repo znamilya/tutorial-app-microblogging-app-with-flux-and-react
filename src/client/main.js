@@ -1,3 +1,3 @@
-import './css/base.styl';
+import 'css/base.styl';
 
 console.log('Hello, New App!');

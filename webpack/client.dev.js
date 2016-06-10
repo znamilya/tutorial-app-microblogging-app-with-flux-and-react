@@ -4,42 +4,50 @@ var webpack           = require('webpack');
 var path              = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var sourcePath        = path.join(__dirname, 'src');
-var distPath          = path.join(__dirname, 'public');
+var PATHS = {
+    src: path.join(__dirname, '..', 'src', 'client'),
+    dist: path.join(__dirname, '..', 'public'),
+}
+var PORT = 7777;
 
 module.exports = {
-    devtool: 'inline-cheap-module-eval-source-map',
+    devtool: 'eval',
     target: 'web',
     entry: [
-        'webpack-dev-server/client?http://localhost:6565',
+        'webpack-dev-server/client?http://localhost:'+PORT,
         'webpack/hot/only-dev-server',
-        path.join(sourcePath, 'main'),
+        PATHS.src+'/main',
     ],
 
     output: {
-        path: distPath,  
+        path: PATHS.dist,  
         filename: 'js/main.js',
-        publicPath: 'public/',
+        publicPath: '/',
     },
 
     resolve: {
-        root: sourcePath,
+        root: PATHS.src,
         modulesDirectories: ['node_modules'],
-        extensions: ['', '.js']
+        extensions: ['', '.js', '.jsx'],
     },
 
     resolveLoader: {
         modulesDirectories: ['node_modules'],
         moduleTemplates: ['*'],
-        extensions: ['', '.js']
+        extensions: ['', '.js'],
     },
 
     module: {
         loaders: [
             {
                 test: /\.js$/,
-                include: sourcePath,
+                include: PATHS.src,
                 loaders: ['babel-loader'],
+            },
+            {
+                test: /\.jsx?$/,
+                include: PATHS.src,
+                loaders: ['react-hot-loader', 'babel-loader'],
             },
             {
                 test: /\.styl$/,
@@ -53,8 +61,7 @@ module.exports = {
                 test: /\.jpe?g$|\.gif$|\.png$/,
                 loaders: ['file-loader?name=img/[name].[ext]'],
             },
-            
-        ]
+        ],
     },
 
     plugins: [
@@ -64,10 +71,12 @@ module.exports = {
     ],
 
     devServer: {
-        port: 6565,
+        port: PORT,
         host: 'localhost',
         hot: true,
         historyApiFallback: true,
-        contentBase: './public',
-    }
+        proxy: {
+            '*': 'http://localhost:7676',
+        },
+    },
 };

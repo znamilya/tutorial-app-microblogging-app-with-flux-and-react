@@ -1,8 +1,8 @@
-import express          from 'express';
-import crypto           from 'crypto';
-import passport         from 'passport';
-import LocalStrategy    from 'passport-local';
-import locallyDB        from 'locallydb';
+const express = require('express');
+const crypto = require('crypto');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const locallyDB = require('locallydb');
 
 const db     = new locallyDB('../../.data');
 const users  = db.collection('users');
@@ -63,7 +63,10 @@ router
         res.redirect('/login')
     })
     .post('/signup', (req, res, next) => {
-        const { fullname, email, username, password } = req.body;
+        const fullname = req.body.fullname;
+        const email = req.body.email;
+        const username = req.body.username;
+        const password = req.body.password;
 
         if (!(fullname && username && email && password)) {
             console.log('we need more data!');
@@ -97,7 +100,7 @@ router
     })
 
 
-export default {
+module.exports = {
     router,
     requireLogin,
 };
