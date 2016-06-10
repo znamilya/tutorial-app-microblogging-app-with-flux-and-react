@@ -20,6 +20,7 @@ module.exports = {
     ],
 
     target: 'node',
+    devtool: 'inline-cheap-module-eval-source-map',
 
     output: {
         path: path.join(__dirname, '../build'),
@@ -28,7 +29,8 @@ module.exports = {
     },    
 
     resolve: {
-        modulesDirectories: ['node_modules', 'components'],
+        root: path.join(__dirname, '../src/server'),
+        modulesDirectories: ['node_modules'],
         extensions: ['', '.js', '.jsx'],
     },
 
@@ -37,15 +39,19 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loaders: ['react-hot', 'babel']
+                loaders: ['react-hot', 'babel'],
+            },
+            {
+                test: /\.json$/,
+                loader: 'json-loader',
             },
             {
                 test: /\.styl$/,
-                loader: 'null-loader'
+                loader: 'null-loader',
             },
             {
                 test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.woff2?$|\.eot$|\.otf$|\.ttf$$/,
-                loader: 'file-loader?name=img/[hash].[ext]'
+                loader: 'file-loader?name=img/[hash].[ext]',
             },
         ],
     },
